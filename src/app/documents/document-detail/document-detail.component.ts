@@ -2,11 +2,11 @@ import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-message-item',
-  templateUrl: './message-item.component.html',
-  styleUrls: ['./message-item.component.css']
+  selector: 'app-document-detail',
+  templateUrl: './document-detail.component.html',
+  styleUrls: ['./document-detail.component.css']
 })
-export class MessageItemComponent implements OnInit {
+export class DocumentDetailComponent implements OnInit {
   @Input() message:Message;
   constructor() { }
 

@@ -6,12 +6,14 @@ import { ContactsComponent } from './contacts/contacts.component';
 import { HeaderComponent } from './header/header.component';
 import { ContactDetailComponent } from './contacts/contact-detail/contact-detail.component';
 import { ContactListComponent } from './contacts/contact-list/contact-list.component';
-import { ContactPersonComponent } from './contacts/contact-list/contact-person/contact-person.component';
+import { ContactPersonComponent } from './contacts/contact-person/contact-person.component';
 import { DocumentsComponent } from './documents/documents.component';
-import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { MessageEditComponent } from './messages/message-edit/message-edit.component';
 import { MessageItemComponent } from './messages/message-item/message-item.component';
 import { MessageListComponent } from './messages/message-list/message-list.component';
+import { DocumentItemComponent } from './documents/document-item/document-item.component';
+import { DocumentDetailComponent } from './documents/document-detail/document-detail.component';
+import { DocumentListComponent } from './documents/document-list/document-list.component';
 
 @NgModule({
   declarations: [
@@ -22,10 +24,12 @@ import { MessageListComponent } from './messages/message-list/message-list.compo
     ContactListComponent,
     ContactPersonComponent,
     DocumentsComponent,
-    DocumentEditComponent,
     MessageEditComponent,
     MessageItemComponent,
-    MessageListComponent
+    MessageListComponent,
+    DocumentItemComponent,
+    DocumentDetailComponent,
+    DocumentListComponent
   ],
   imports: [
     BrowserModule
