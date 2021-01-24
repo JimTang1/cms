@@ -7,7 +7,7 @@ import { Message } from '../message.model';
 })
 export class MessageListComponent implements OnInit {
   messages: Message[]=[
-    new Message('1','Subject1','Message1', 'WeiChun Tang')
+    new Message('1','Subject1','Message1', 'Wei Chun Tang')
   ];
 
   constructor() { }
