@@ -1,5 +1,5 @@
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Document } from '../document.model';
 
 @Component({
   selector: 'app-document-list',
@@ -7,9 +7,32 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./document-list.component.css']
 })
 export class DocumentListComponent implements OnInit {
+  @Output() selectDocumentEvent = new EventEmitter<Document>();
+  documents:Document[] =[
+    new Document(
+      '1',
+      'Wei Chun Tang',
+      'I am a good person :P',
+      'https://github.com/JimTang1',
+      null
+    ),
+
+    new Document(
+      '2',
+      'Jim Tang',
+      'Another good guy!',
+      'https://github.com/JimTang1',
+      null
+    )
+     
+    
+  ]
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  onSelected(document: Document){
+    this.selectDocumentEvent.emit(document);
+  }
 }
