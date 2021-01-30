@@ -2,7 +2,8 @@ import { Component, OnInit, Output, EventEmitter, ElementRef, HostBinding, HostL
 
 @Component({
     selector: 'app-header',
-    templateUrl: './header.component.html'
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.css']
 })
 
 export class HeaderComponent implements OnInit{
