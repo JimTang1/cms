@@ -1,19 +1,23 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { CmsService } from 'src/app/cms.service';
 import { Contacts} from '../contacts.model';
+
 
 @Component({
   selector: 'app-contact-list',
   templateUrl: './contact-list.component.html',
-  styleUrls: ['./contact-list.component.css']
+  styleUrls: ['./contact-list.component.css'],
+  providers:[CmsService]
 })
 export class ContactListComponent implements OnInit {
   @Output() selectedContactEvent = new EventEmitter<Contacts>();
+
   contacts: Contacts[] = [
     new Contacts(
     "1",
-    "R. Kent Jackson", 
+    "R. Kent Jackson",
     "jacksonk@byui.edu",
-    "208-496-3771", 
+    "208-496-3771",
     'https://web.byui.edu/Directory/Employee/jacksonk.jpg',
     null),
 
@@ -25,7 +29,8 @@ export class ContactListComponent implements OnInit {
     'https://web.byui.edu/Directory/Employee/barzeer.jpg',
     null)
   ];
-  constructor() { }
+
+  constructor(private cmsService: CmsService) { }
 
   ngOnInit(): void {
   }
