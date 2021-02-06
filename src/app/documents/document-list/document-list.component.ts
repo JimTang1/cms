@@ -12,25 +12,6 @@ export class DocumentListComponent implements OnInit {
   @Output() selectDocumentEvent = new EventEmitter<Document>();
   documents:Document[] = [];
 
-
-  // documents:Document[] =[
-  //   new Document(
-  //     '1',
-  //     'Wei Chun Tang',
-  //     'I am a good person :P',
-  //     'https://github.com/JimTang1',
-  //     null
-  //   ),
-
-  //   new Document(
-  //     '2',
-  //     'Jim Tang',
-  //     'Another good guy!',
-  //     'https://github.com/JimTang1',
-  //     null
-  //   )
-  // ]
-
   constructor(private documentService: DocumentService) { }
 
   ngOnInit(): void {
@@ -39,5 +20,6 @@ export class DocumentListComponent implements OnInit {
 
   onSelected(document: Document){
     this.selectDocumentEvent.emit(document);
+    //this.documentService.documentSelectedEvent.emit(document);
   }
 }
