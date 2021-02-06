@@ -17,7 +17,7 @@ export class ContactService {
 
   getContacts():Contacts[]{
     return this.contacts.slice();
-  };
+  }
 
   // getContacts(id:string): Contacts{
   //   for(let contact of contacts){
