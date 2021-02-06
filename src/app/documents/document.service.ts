@@ -6,8 +6,9 @@ import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 })
 export class DocumentService {
   documentSelectedEvent = new EventEmitter<Document>();
-  private documents:Document[]=[];
-  constructor() { 
+  private documents:Document[];
+
+  constructor() {
     this.documents = MOCKDOCUMENTS;
   }
 

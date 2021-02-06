@@ -8,10 +8,10 @@ import {MOCKCONTACTS} from './MOCKCONTACTS';
 })
 
 export class ContactService {
-  private contacts : Contacts[] = [];
+  private contacts : Contacts[];
   contactSelectedEvent = new EventEmitter<Contacts>();
 
-  constructor() { 
+  constructor() {
     this.contacts = MOCKCONTACTS;
   }
 
@@ -19,12 +19,12 @@ export class ContactService {
     return this.contacts.slice();
   }
 
-  // getContacts(id:string): Contacts{
-  //   for(let contact of contacts){
-  //     if(contact.id === this.id){
-  //       return contact.id;
-  //     }
-  //   }
-  //   return null;
-  // }
+  getContact(id:string): Contacts{
+    for(let contact of this.contacts){
+      if(contact.id === id){
+        return contact;
+      }
+    }
+    return null;
+  }
 }
