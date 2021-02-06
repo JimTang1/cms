@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
+import {Document} from './document.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,13 @@ export class DocumentService {
     return this.documents.slice();
   };
 
+  getDocument(id: string): Document{
+    for(let document of this.documents){
+      if(document.id === id){
+        return document;
+      }
+    }
+  }
 }
 
 
