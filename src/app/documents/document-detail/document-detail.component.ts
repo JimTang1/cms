@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import {Document} from '../document.model';
 import { DocumentService } from '../document.service';
 @Component({
@@ -12,7 +12,8 @@ export class DocumentDetailComponent implements OnInit {
   id:string;
 
   constructor(private route: ActivatedRoute,
-    private documentService: DocumentService) { }
+    private documentService: DocumentService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.route.params
@@ -20,6 +21,11 @@ export class DocumentDetailComponent implements OnInit {
       this.id = params['id'];
       this.document = this.documentService.getDocumentId(this.id);
     })
+  }
+
+  onEditDocument(){
+    this.router.navigate(['edit'], {relativeTo: this.route});
+    //this.router.navigate(['../', this.id, 'edit'], {relativeTo: this.route});
   }
 
 }
