@@ -1,6 +1,5 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
+import {NgModule}   from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { HeaderComponent } from './header/header.component';
@@ -14,40 +13,30 @@ import { MessageListComponent } from './messages/message-list/message-list.compo
 import { DocumentItemComponent } from './documents/document-item/document-item.component';
 import { DocumentDetailComponent } from './documents/document-detail/document-detail.component';
 import { DocumentListComponent } from './documents/document-list/document-list.component';
-import {DropdownDirective} from './header/dropdown.directive';
-import { CmsService } from './cms.service';
-import { MessageService } from './messages/message.service';
-import { RouterModule, Routes } from '@angular/router';
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
-import { AppRoutingModule } from './app-routing.module';
 import { ContactEditComponent } from './contact/contact-edit/contact-edit.component';
 
 
+const appRoutes : Routes =[
+    { path: '', redirectTo: '/documents', pathMatch: 'full' },
+    { path: 'documents', component: DocumentsComponent, children:[
+      {path: 'new', component:DocumentEditComponent},
+      {path: ':id' ,component:DocumentDetailComponent},
+      {path: ':id/Edit' , component:DocumentEditComponent}
+    ]},
+    { path: 'contacts', component: ContactsComponent, children: [
+      {path: 'new', component:ContactEditComponent},
+      {path: ':id', component: ContactDetailComponent},
+      {path: ':id/Edit', component: ContactDetailComponent}
+    
+    ]},
+    { path: 'messages', component: MessageListComponent},
+  ];
+  
 @NgModule({
-  declarations: [
-    AppComponent,
-    ContactsComponent,
-    HeaderComponent,
-    ContactDetailComponent,
-    ContactListComponent,
-    ContactPersonComponent,
-    DocumentsComponent,
-    MessageEditComponent,
-    MessageItemComponent,
-    MessageListComponent,
-    DocumentItemComponent,
-    DocumentDetailComponent,
-    DocumentListComponent,
-    DropdownDirective,
-    DocumentEditComponent,
-    ContactEditComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
-  providers: [MessageService],
-  bootstrap: [AppComponent]
-
+    imports :[RouterModule.forRoot(appRoutes)],
+    exports: [RouterModule]
 })
-export class AppModule { }
+export class AppRoutingModule{
+    
+}

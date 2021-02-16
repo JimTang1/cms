@@ -6,15 +6,15 @@
                 <span class="heading">Contacts</span>
             </div>
             <div class="col-xs-4">
-                <button class="btn btn-success">New Contact</button>
+                <a class="btn btn-success pull-right" [routerLink]= "['new']">New Contact</a>
             </div>
             <hr>
             <div class="row">
                 <div class="col-xs-12">
                     <app-contact-person
-                    *ngFor="let contact of contacts"
+                    *ngFor="let contact of contacts; let i = index"
                     [contact]="contact"
-                    (click)="onSelected(contact)"
+                    [index]="i"
                     >
                     </app-contact-person>
                 </div>

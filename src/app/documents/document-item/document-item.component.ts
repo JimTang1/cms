@@ -7,8 +7,8 @@ import { Document } from '../document.model';
 })
 export class DocumentItemComponent implements OnInit {
   @Input() document:Document;
-  constructor() { }
-
+  @Input() index:string;
+  
   ngOnInit(): void {
   }
 

@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ContactService } from '../contact.service';
 import { Contacts } from '../contacts.model';
 
 @Component({
@@ -9,13 +8,9 @@ import { Contacts } from '../contacts.model';
 })
 export class ContactPersonComponent implements OnInit {
   @Input() contact: Contacts;
-  constructor(private contactService: ContactService) { }
+  @Input() index:string;
 
   ngOnInit(): void {
   }
 
-  onSelected(contact: Contacts){
-    //this.selectedContactEvent.emit(contact);
-    this.contactService.contactSelectedEvent.emit(contact);
-  }
 }
