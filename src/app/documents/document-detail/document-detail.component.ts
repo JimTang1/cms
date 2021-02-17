@@ -24,7 +24,7 @@ export class DocumentDetailComponent implements OnInit {
   }
 
   onEditDocument(){
-    this.router.navigate(['edit'], {relativeTo: this.route});
+    this.router.navigate(['Edit'], {relativeTo: this.route});
     //this.router.navigate(['../', this.id, 'edit'], {relativeTo: this.route});
   }
 
