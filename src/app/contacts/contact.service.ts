@@ -10,6 +10,7 @@ import {MOCKCONTACTS} from './MOCKCONTACTS';
 export class ContactService {
   private contacts : Contacts[];
   contactSelectedEvent = new EventEmitter<Contacts>();
+  contactChangedEvent = new EventEmitter<Contacts[]>();
 
   constructor() {
     this.contacts = MOCKCONTACTS;
@@ -30,5 +31,19 @@ export class ContactService {
       }
     }
     return null;
+  }
+
+  deleteDocument(contacts:Contacts){
+    if(!contacts){
+      return;
+    }
+
+    const pos = this.contacts.indexOf(contacts);
+    if(pos < 0){
+      return;
+    }
+
+    this.contacts.splice(pos, 1);
+    this.contactChangedEvent.emit(this.contacts.slice());
   }
 }

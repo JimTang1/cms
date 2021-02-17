@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { WinRefService } from 'src/app/win-ref.service';
 import { ContactService } from '../contact.service';
 import { Contacts} from '../contacts.model';
 
@@ -11,10 +12,14 @@ import { Contacts} from '../contacts.model';
 export class ContactDetailComponent implements OnInit {
   contact: Contacts;
   id:string;
-  
+  nativeWindow: any;
+
   constructor( private route:ActivatedRoute,
     private contactService: ContactService,
-    private router: Router) { }
+    private router: Router,
+    private windowRefService: WinRefService) { 
+      this.nativeWindow = windowRefService.getNativeWindow();
+    }
 
   ngOnInit(): void {
     this.route.params 
@@ -28,4 +33,7 @@ export class ContactDetailComponent implements OnInit {
     this.router.navigate(['Edit'],{relativeTo: this.route});
   }
 
+    onDelete(){
+      this.contactService.deleteDocument(this.contact);
+    }
 }

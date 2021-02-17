@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Document } from '../document.model';
 import { DocumentService } from '../document.service';
 
@@ -9,11 +10,19 @@ import { DocumentService } from '../document.service';
 })
 export class DocumentListComponent implements OnInit {
   documents:Document[];
+  document:Document;
 
-  constructor(private documentService: DocumentService) { }
+
+  constructor(private documentService: DocumentService,
+    router: Router,
+    route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.documents = this.documentService.getDocuments();
+    
+    this.documentService.documentChangedEvent
+      .subscribe((documents)=>{
+        this.documents = documents;
+      })
   }
-
 }

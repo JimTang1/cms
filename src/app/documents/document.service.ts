@@ -7,11 +7,12 @@ import {Document} from './document.model';
 })
 export class DocumentService {
   documentSelectedEvent = new EventEmitter<Document>();
+  documentChangedEvent = new EventEmitter<Document[]>();
   private documents:Document[];
 
   constructor() {
     this.documents = MOCKDOCUMENTS;
-  }
+  } 
 
   getDocuments(){
     return this.documents.slice();
@@ -20,12 +21,27 @@ export class DocumentService {
   getDocumentId(id:string){
     return this.documents[id];
   }
+  
   getDocument(id: string): Document{
     for(let document of this.documents){
       if(document.id === id){
         return document;
       }
     }
+  }
+
+  deleteDocument(document:Document){
+    if(!document){
+      return;
+    }
+
+    const pos = this.documents.indexOf(document);
+    if(pos < 0){
+      return;
+    }
+
+    this.documents.splice(pos, 1);
+    this.documentChangedEvent.emit(this.documents.slice());
   }
 }
 
