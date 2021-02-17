@@ -18,10 +18,6 @@ export class DocumentService {
     return this.documents.slice();
   };
 
-  getDocumentId(id:string){
-    return this.documents[id];
-  }
-  
   getDocument(id: string): Document{
     for(let document of this.documents){
       if(document.id === id){

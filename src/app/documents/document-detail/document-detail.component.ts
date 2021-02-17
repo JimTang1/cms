@@ -25,7 +25,7 @@ export class DocumentDetailComponent implements OnInit {
     this.route.params
     .subscribe((params: Params) =>{
       this.id = params['id'];
-      this.document = this.documentService.getDocumentId(this.id);
+      this.document = this.documentService.getDocument(this.id);
     })
   }
 
