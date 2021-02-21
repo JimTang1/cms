@@ -14,7 +14,7 @@ import { DocumentItemComponent } from './documents/document-item/document-item.c
 import { DocumentDetailComponent } from './documents/document-detail/document-detail.component';
 import { DocumentListComponent } from './documents/document-list/document-list.component';
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
-import { ContactEditComponent } from './contact/contact-edit/contact-edit.component';
+import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
 
 
 const appRoutes : Routes =[

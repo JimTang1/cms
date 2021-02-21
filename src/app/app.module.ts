@@ -20,7 +20,7 @@ import { MessageService } from './messages/message.service';
 import { RouterModule, Routes } from '@angular/router';
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ContactEditComponent } from './contact/contact-edit/contact-edit.component';
+import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
 
 
 @NgModule({
