@@ -12,4 +12,7 @@ export class ContactEditComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onCancel(){
+    
+  }
 }

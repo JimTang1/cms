@@ -21,4 +21,7 @@ export class DocumentEditComponent implements OnInit {
     })
   }
 
+  onCancel(){
+    
+  }
 }
