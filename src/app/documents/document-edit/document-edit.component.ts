@@ -39,19 +39,17 @@ export class DocumentEditComponent implements OnInit {
       this.document = JSON.parse(JSON.stringify(this.originalDocument));
 
       // this.editMode = params['id'] != null;
-      
+
     })
   }
 
   onSubmit(form:NgForm){
     const value = form.value;
-    // this.newDocument = new Document(
-      
-    // );
+    // this.newDocument = new Document();
     if(this.editMode === true){
-      this.documentService.updateDocument(this.originalDocument, this.newDocument);
+      this.documentService.updateDocument(this.originalDocument, value);
     }else{
-      this.documentService.addDocument(this.newDocument);
+      this.documentService.addDocument(value);
     }
     this.router.navigate(['..'],{relativeTo: this.route});
   }

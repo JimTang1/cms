@@ -38,7 +38,7 @@ export class ContactService {
     return null;
   }
 
-  deleteDocument(contacts:Contacts){
+  deleteContact(contacts:Contacts){
     if(!contacts){
       return;
     }

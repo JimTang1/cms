@@ -17,12 +17,12 @@ export class ContactDetailComponent implements OnInit {
   constructor( private route:ActivatedRoute,
     private contactService: ContactService,
     private router: Router,
-    private windowRefService: WinRefService) { 
+    private windowRefService: WinRefService) {
       this.nativeWindow = windowRefService.getNativeWindow();
     }
 
   ngOnInit(): void {
-    this.route.params 
+    this.route.params
     .subscribe((params: Params) =>{
       this.id = params['id'];
       this.contact= this.contactService.getContact(this.id);
@@ -34,6 +34,6 @@ export class ContactDetailComponent implements OnInit {
   }
 
     onDelete(){
-      this.contactService.deleteDocument(this.contact);
+      this.contactService.deleteContact(this.contact);
     }
 }
