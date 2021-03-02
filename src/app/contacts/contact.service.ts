@@ -25,10 +25,6 @@ export class ContactService {
     return this.contacts.slice();
   }
 
-  getContactId(id: string){
-    return this.contacts[id];
-  }
-
   getContact(id:string): Contacts{
     for(let contact of this.contacts){
       if(contact.id === id){
