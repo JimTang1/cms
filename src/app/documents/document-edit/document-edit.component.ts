@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { DocumentService } from '../document.service';
+import { Document } from '../document.model';
 
 @Component({
   selector: 'app-document-edit',
@@ -8,20 +11,52 @@ import { ActivatedRoute, Params } from '@angular/router';
 })
 export class DocumentEditComponent implements OnInit {
   id:string;
-  editMode = false;
+  editMode: boolean = false;
+  originalDocument: Document;
+  document: Document;
+  newDocument: Document;
 
-  constructor(private route: ActivatedRoute) { }
+
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private documentService: DocumentService) { }
 
   ngOnInit(): void {
     this.route.params
     .subscribe((params: Params)=>{
       this.id = params['id'];
-      this.editMode = params['id'] != null;
+      if(this.id == null || this.id ==undefined){
+        this.editMode = false;
+        return;
+      }
+
+      this.originalDocument = this.documentService.getDocument(this.id);
+      if(this.originalDocument == null || this.originalDocument == undefined){
+        return;
+      }
+
+      this.editMode = true;
+      this.document = JSON.parse(JSON.stringify(this.originalDocument));
+
+      // this.editMode = params['id'] != null;
       
     })
   }
 
+  onSubmit(form:NgForm){
+    const value = form.value;
+    // this.newDocument = new Document(
+      
+    // );
+    if(this.editMode === true){
+      this.documentService.updateDocument(this.originalDocument, this.newDocument);
+    }else{
+      this.documentService.addDocument(this.newDocument);
+    }
+    this.router.navigate(['..'],{relativeTo: this.route});
+  }
+
   onCancel(){
-    
+    this.router.navigate(['..'],{relativeTo: this.route});
   }
 }

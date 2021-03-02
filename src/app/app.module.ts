@@ -21,6 +21,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { ContactEditComponent } from './contacts/contact-edit/contact-edit.compo
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]
