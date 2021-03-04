@@ -22,6 +22,8 @@ import { DocumentEditComponent } from './documents/document-edit/document-edit.c
 import { AppRoutingModule } from './app-routing.module';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
 import { FormsModule } from '@angular/forms';
+import { DndModule } from 'ng2-dnd';
+
 
 
 @NgModule({
@@ -47,8 +49,9 @@ import { FormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    DndModule.forRoot()
   ],
-  providers: [MessageService],
+  providers: [],
   bootstrap: [AppComponent]
 
 })

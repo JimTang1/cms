@@ -5,6 +5,7 @@ import { MOCKMESSAGES } from './MOCKMESSAGES';
 @Injectable({
   providedIn: 'root'
 })
+
 export class MessageService {
   private messages : Message[] =[];
   messageChangedEvent = new EventEmitter<Message[]>();
