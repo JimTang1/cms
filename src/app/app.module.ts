@@ -15,9 +15,6 @@ import { DocumentItemComponent } from './documents/document-item/document-item.c
 import { DocumentDetailComponent } from './documents/document-detail/document-detail.component';
 import { DocumentListComponent } from './documents/document-list/document-list.component';
 import {DropdownDirective} from './header/dropdown.directive';
-import { CmsService } from './cms.service';
-import { MessageService } from './messages/message.service';
-import { RouterModule, Routes } from '@angular/router';
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
