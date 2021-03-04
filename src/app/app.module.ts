@@ -26,6 +26,7 @@ import { DndModule } from 'ng2-dnd';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
