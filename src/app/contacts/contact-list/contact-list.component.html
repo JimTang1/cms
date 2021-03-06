@@ -12,9 +12,11 @@
             <div class="row">
                 <div class="col-xs-12">
                     <app-contact-person
-                    *ngFor="let contact of contacts; let i = index"
+                    *ngFor="let contact of contacts;"
                     [contact]="contact"
-                    [index]="i"
+                    dnd-draggable [dragEnabled]="true" 
+                    [dragData] = "contact"
+                    [dropZones] = "['contactGroup']"
                     >
                     </app-contact-person>
                 </div>

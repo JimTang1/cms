@@ -45,8 +45,21 @@ export class ContactEditComponent implements OnInit {
     this.router.navigate(['..'], {relativeTo:this.route});
   }
 
-  onRemoveItem(){
+  onRemoveItem(index: number){
+    if(index<0 || index >= this.groupContacts.length){
+      return;
+    }
+    this.groupContacts.splice(index, 1);
+  }
 
+  addToGroup($event: any){
+    const selectedContact:Contacts = $event.dragData;
+    const invalidGropContact = this.isInvalidContact(selectedContact);
+    this.isInvalidContact(selectedContact);
+    if(invalidGropContact){
+      return;
+    }
+    this.groupContacts.push(selectedContact);
   }
 
   onSubmit(form:NgForm){
@@ -57,5 +70,21 @@ export class ContactEditComponent implements OnInit {
       this.contactServic.addContact(value);
     }
     this.router.navigate(['..'], {relativeTo:this.route});
+  }
+
+  isInvalidContact(newContact:Contacts){
+    if(!newContact){
+      return true;
+    }
+    if(this.contact && newContact.id === this.contact.id){
+      return true;
+    }
+
+    for(let i = 0; i < this.groupContacts.length;i++){
+      if(newContact.id === this.groupContacts[i].id){
+        return true;
+      }
+    }
+    return false;
   }
 }
