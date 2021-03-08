@@ -24,20 +24,21 @@ export class ContactEditComponent implements OnInit {
     this.route.params
     .subscribe((params: Params)=>{
       this.id = params['id'];
-      if(this.id == null || this.id ==undefined){
+      if(!this.id){
         this.editMode = false;
         return;
       }
       this.originalContact = this.contactServic.getContact(this.id);
-      if(this.originalContact == null || this.originalContact == undefined){
+      if(!this.originalContact){
         return;
       }
 
       this.editMode = true;
       this.contact = JSON.parse(JSON.stringify(this.originalContact));
-      if(this.contact.group){
-        this.groupContacts = JSON.parse(JSON.stringify(this.groupContacts));
+      if(this.originalContact.group && this.originalContact.group.length>0){
+        this.groupContacts = JSON.parse(JSON.stringify(this.originalContact.group));
       }
+
     })
   }
 
@@ -55,7 +56,7 @@ export class ContactEditComponent implements OnInit {
   addToGroup($event: any){
     const selectedContact:Contacts = $event.dragData;
     const invalidGropContact = this.isInvalidContact(selectedContact);
-    this.isInvalidContact(selectedContact);
+
     if(invalidGropContact){
       return;
     }
@@ -64,10 +65,19 @@ export class ContactEditComponent implements OnInit {
 
   onSubmit(form:NgForm){
     const value = form.value;
-    if(this.editMode === true){
-      this.contactServic.updateContact(this.originalContact, value);
+    const newContact = new Contacts(
+      '',
+      value.name,
+      value.email,
+      value.phone,
+      value.imageUrl,
+      this.groupContacts
+    );
+
+    if(this.editMode){
+      this.contactServic.updateContact(this.originalContact, newContact);
     }else{
-      this.contactServic.addContact(value);
+      this.contactServic.addContact(newContact);
     }
     this.router.navigate(['..'], {relativeTo:this.route});
   }

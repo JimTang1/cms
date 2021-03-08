@@ -75,10 +75,7 @@ export class ContactService {
   }
 
   updateContact(originalContact: Contacts, newContact: Contacts){
-    if(originalContact === null ||
-      originalContact === undefined ||
-      newContact === null ||
-      newContact === undefined){
+    if(!originalContact||!newContact){
         return;
       }
 
