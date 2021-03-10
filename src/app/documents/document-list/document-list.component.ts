@@ -9,8 +9,7 @@ import { DocumentService } from '../document.service';
   styleUrls: ['./document-list.component.css'],
 })
 export class DocumentListComponent implements OnInit, OnDestroy{
-  documents:Document[];
-  document:Document;
+  documents:Document[] =[];
   private documentChangeSub;
 
   constructor(private documentService: DocumentService,

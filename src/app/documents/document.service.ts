@@ -10,14 +10,19 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class DocumentService {
   documentSelectedEvent = new EventEmitter<Document>();
   documentChangedEvent = new Subject<Document[]>();
-  private documents:Document[];
+  private documents:Document[] = [];
   maxDocumentId: number;
   documentsListClone: Document[];
+  documentListChangedEvent = new Subject<Document[]>();
+  databaseUrl = "https://wdd430-cms-80d03-default-rtdb.firebaseio.com/";
 
-  constructor() {
+
+  constructor(private http:HttpClient) {
     this.documents = MOCKDOCUMENTS;
     this.maxDocumentId = this.getMaxId();
+    
   } 
+  
 
   getDocuments(){
     return this.documents.slice();
@@ -58,7 +63,7 @@ export class DocumentService {
   }
 
   addDocument(newDocument: Document){
-    if(newDocument === null || newDocument === undefined){
+    if(!newDocument){
       return;
     }
     this.maxDocumentId++;
@@ -71,10 +76,7 @@ export class DocumentService {
   }
 
   updateDocument(originalDocument: Document, newDocument: Document){
-    if(originalDocument === null ||
-      originalDocument === undefined ||
-      newDocument === null ||
-      newDocument === undefined){
+    if(!originalDocument ||!newDocument){
         return;
       }
 
@@ -88,6 +90,24 @@ export class DocumentService {
       this.documentsListClone = this.documents.slice();
       this.documentChangedEvent.next(this.documentsListClone);
   }
+
+  sortAndSend(){
+    this.documents = this.documents.sort(
+      (a,b)=>a.name.toLowerCase()>b.name.toLowerCase()?1:
+      b.name.toLowerCase()>a.name.toLowerCase()?-1:0);
+    this.documentListChangedEvent.next(this.documents.slice());
+  }
+  getDatabase(){
+    this.http.get(this.databaseUrl)
+      .subscribe(
+        (documents:Document[]) =>{
+          this.documents = documents;
+          this.maxDocumentId = this.getMaxId();
+          this.sortAndSend();
+        },(error)=>{
+          console.log("Document Error " + error);
+        }
+      )
+  }
+
 }
-
-
