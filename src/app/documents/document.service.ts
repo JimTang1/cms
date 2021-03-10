@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 import {Document} from './document.model';
 import { Subject } from 'rxjs';
-
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
