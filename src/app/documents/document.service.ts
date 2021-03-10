@@ -14,7 +14,7 @@ export class DocumentService {
   maxDocumentId: number;
   documentsListClone: Document[];
   documentListChangedEvent = new Subject<Document[]>();
-  databaseUrl = "https://wdd430-cms-80d03-default-rtdb.firebaseio.com/";
+  private databaseUrl = "https://wdd430-cms-80d03-default-rtdb.firebaseio.com/documents/";
 
 
   constructor(private http:HttpClient) {
@@ -23,10 +23,12 @@ export class DocumentService {
     
   } 
   
-
-  getDocuments(){
-    return this.documents.slice();
-  };
+  sortAndSend(){
+    this.documents = this.documents.sort(
+      (a,b)=>a.name.toLowerCase()>b.name.toLowerCase()?1:
+      b.name.toLowerCase()>a.name.toLowerCase()?-1:0);
+    this.documentListChangedEvent.next(this.documents.slice());
+  }
 
   getDocument(id: string): Document{
     for(let document of this.documents){
@@ -35,6 +37,23 @@ export class DocumentService {
       }
     }
   }
+
+  getDocuments(){
+    return this.documents.slice();
+  };
+
+  // getDocuments(){
+  //   this.http.get(this.databaseUrl)
+  //     .subscribe(
+  //       (documents:Document[]) =>{
+  //         this.documents = documents;
+  //         this.maxDocumentId = this.getMaxId();
+  //         this.sortAndSend();
+  //       },(error)=>{
+  //         console.log("Document Error " + error);
+  //       }
+  //     )
+  // }
 
   deleteDocument(document:Document){
     if(!document){
@@ -89,25 +108,6 @@ export class DocumentService {
       this.documents[pos] = newDocument;
       this.documentsListClone = this.documents.slice();
       this.documentChangedEvent.next(this.documentsListClone);
-  }
-
-  sortAndSend(){
-    this.documents = this.documents.sort(
-      (a,b)=>a.name.toLowerCase()>b.name.toLowerCase()?1:
-      b.name.toLowerCase()>a.name.toLowerCase()?-1:0);
-    this.documentListChangedEvent.next(this.documents.slice());
-  }
-  getDatabase(){
-    this.http.get(this.databaseUrl)
-      .subscribe(
-        (documents:Document[]) =>{
-          this.documents = documents;
-          this.maxDocumentId = this.getMaxId();
-          this.sortAndSend();
-        },(error)=>{
-          console.log("Document Error " + error);
-        }
-      )
   }
 
 }
