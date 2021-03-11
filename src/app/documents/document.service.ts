@@ -3,6 +3,7 @@ import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 import {Document} from './document.model';
 import { Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class DocumentService {
   maxDocumentId: number;
   documentsListClone: Document[];
   documentListChangedEvent = new Subject<Document[]>();
-  private databaseUrl = "https://wdd430-cms-80d03-default-rtdb.firebaseio.com/documents/";
+  private databaseUrl = "https://wdd430-cms-80d03-default-rtdb.firebaseio.com/documents.json";
 
 
   constructor(private http:HttpClient) {
@@ -38,22 +39,22 @@ export class DocumentService {
     }
   }
 
-  getDocuments(){
-    return this.documents.slice();
-  };
-
   // getDocuments(){
-  //   this.http.get(this.databaseUrl)
-  //     .subscribe(
-  //       (documents:Document[]) =>{
-  //         this.documents = documents;
-  //         this.maxDocumentId = this.getMaxId();
-  //         this.sortAndSend();
-  //       },(error)=>{
-  //         console.log("Document Error " + error);
-  //       }
-  //     )
-  // }
+  //   return this.documents.slice();
+  // };
+
+  getDocuments(){
+    this.http.get<Document[]>(this.databaseUrl)
+      .subscribe(
+        (documents:Document[]) =>{
+          this.documents = documents;
+          this.maxDocumentId = this.getMaxId();
+          this.sortAndSend();
+        },(error)=>{
+          console.log("Document Error " + error);
+        }
+      )
+  }
 
   deleteDocument(document:Document){
     if(!document){
@@ -65,6 +66,7 @@ export class DocumentService {
       return;
     }
 
+    
     this.documents.splice(pos, 1);
     this.documentChangedEvent.next(this.documents.slice());
   }
