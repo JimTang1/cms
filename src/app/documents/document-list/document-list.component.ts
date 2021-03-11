@@ -18,24 +18,15 @@ export class DocumentListComponent implements OnInit, OnDestroy{
     router: Router,
     route: ActivatedRoute) { }
 
-  ngOnInit(): void {
-    this.documents = this.documentService.getDocuments();
-    
-    this.documentChangeSub = this.documentService.documentChangedEvent
-      .subscribe((documents)=>{
-        this.documents = documents;
-      })
-  }
-  
-    // ngOnInit():void{
-    //   this.subscription = this.documentService.documentListChangedEvent
-    //   .subscribe(
-    //     (documents: Document[]) =>{
-    //       this.documents = documents;
-    //     }
-    //   );
-    //     this.documentService.getDocuments();
-    // }
+    ngOnInit():void{
+      this.subscription = this.documentService.documentListChangedEvent
+      .subscribe(
+        (documents: Document[]) =>{
+          this.documents = documents;
+        }
+      );
+        this.documentService.getDocuments();
+    }
 
   ngOnDestroy(){
     this.documentChangeSub.unsubscribe();

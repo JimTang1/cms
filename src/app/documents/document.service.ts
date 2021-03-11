@@ -1,6 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
-import {Document} from './document.model';
+import { Document } from './document.model';
 import { Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
@@ -19,11 +18,19 @@ export class DocumentService {
 
 
   constructor(private http:HttpClient) {
-    this.documents = MOCKDOCUMENTS;
     this.maxDocumentId = this.getMaxId();
-    
   } 
   
+  storeDocuments(){
+    let documentStr = JSON.stringify(this.documents);
+    const headers = new HttpHeaders({"Content-Type": "application/json"});
+
+    this.http.put(this.databaseUrl, documentStr,{headers: headers})
+    .subscribe(()=>{
+      this.sortAndSend();
+    })
+  }
+
   sortAndSend(){
     this.documents = this.documents.sort(
       (a,b)=>a.name.toLowerCase()>b.name.toLowerCase()?1:
@@ -39,10 +46,6 @@ export class DocumentService {
     }
   }
 
-  // getDocuments(){
-  //   return this.documents.slice();
-  // };
-
   getDocuments(){
     this.http.get<Document[]>(this.databaseUrl)
       .subscribe(
@@ -56,33 +59,7 @@ export class DocumentService {
       )
   }
 
-  deleteDocument(document:Document){
-    if(!document){
-      return;
-    }
-
-    const pos = this.documents.indexOf(document);
-    if(pos < 0){
-      return;
-    }
-
-    
-    this.documents.splice(pos, 1);
-    this.documentChangedEvent.next(this.documents.slice());
-  }
-
-  getMaxId(){
-    let maxId = 0;
-    this.documents.forEach(document => {
-      let currentId = +document.id;
-      if(currentId > maxId){
-        maxId = currentId;
-      }
-    });
-
-    return maxId;
-  }
-
+  
   addDocument(newDocument: Document){
     if(!newDocument){
       return;
@@ -90,10 +67,7 @@ export class DocumentService {
     this.maxDocumentId++;
     newDocument.id = this.maxDocumentId.toString();
     this.documents.push(newDocument);
-    this.documentsListClone = this.documents.slice();
-
-    this.documentChangedEvent.next(this.documentsListClone)
-
+    this.sortAndSend();
   }
 
   updateDocument(originalDocument: Document, newDocument: Document){
@@ -108,8 +82,32 @@ export class DocumentService {
 
       newDocument.id = originalDocument.id;
       this.documents[pos] = newDocument;
-      this.documentsListClone = this.documents.slice();
-      this.documentChangedEvent.next(this.documentsListClone);
+      this.sortAndSend();
+    }
+
+  deleteDocument(document:Document){
+    if(!document){
+      return;
+    }
+
+    const pos = this.documents.indexOf(document);
+    if(pos < 0){
+      return;
+    }
+
+    this.documents.splice(pos, 1);
+    this.sortAndSend();
   }
 
+  getMaxId(){
+    let maxId = 0;
+    this.documents.forEach(document => {
+      let currentId = +document.id;
+      if(currentId > maxId){
+        maxId = currentId;
+      }
+    });
+
+    return maxId;
+  }
 }

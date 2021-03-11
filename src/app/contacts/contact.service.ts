@@ -2,6 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Contacts } from './contacts.model';
 import {MOCKCONTACTS} from './MOCKCONTACTS';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 @Injectable({
@@ -12,17 +13,33 @@ export class ContactService {
   private contacts : Contacts[];
   contactSelectedEvent = new EventEmitter<Contacts>();
   contactChangedEvent = new Subject<Contacts[]>();
+  contactListChangedEvent = new Subject<Contacts[]>();
   maxContactId: number;
   contactsListClone: Contacts[];
+  private databaseUrl = "https://wdd430-cms-80d03-default-rtdb.firebaseio.com/contacts.json";
 
 
-  constructor() {
+  constructor(private http:HttpClient) {
     this.contacts = MOCKCONTACTS;
     this.maxContactId = this.getMaxId();
   }
 
-  getContacts():Contacts[]{
-    return this.contacts.slice();
+  storeContacts(){
+    let contactStr = JSON.stringify(this.contacts);
+    const headers = new HttpHeaders({"Content-Type":"application/json"});
+
+    this.http.put(this.databaseUrl, contactStr, {headers: headers})
+      .subscribe(()=>{
+        this.sortAndSend();
+      })
+    }
+  
+  sortAndSend(){
+    this.contacts = this.contacts.sort(
+     (a,b)=>a.name.toLowerCase()>b.name.toLowerCase()?1:
+      b.name.toLowerCase()>a.name.toLowerCase()? -1:0)
+
+    this.contactListChangedEvent.next(this.contacts.slice());
   }
 
   getContact(id:string): Contacts{
@@ -32,6 +49,17 @@ export class ContactService {
       }
     }
     return null;
+  }
+
+  getContacts(){
+    this.http.get<Contacts[]>(this.databaseUrl)
+    .subscribe((contacts:Contacts[])=>{
+      this.contacts = contacts;
+      this.maxContactId = this.getMaxId();
+      this.sortAndSend();
+    },(error)=>{
+      console.log("Contact Error: " + error);
+    })
   }
 
   deleteContact(contacts:Contacts){
@@ -45,7 +73,7 @@ export class ContactService {
     }
 
     this.contacts.splice(pos, 1);
-    this.contactChangedEvent.next(this.contacts.slice());
+    this.sortAndSend();
   }
 
   getMaxId(){
@@ -69,10 +97,8 @@ export class ContactService {
       this.maxContactId++;
       newContact.id = this.maxContactId.toString();
       this.contacts.push(newContact);
-      this.contactsListClone = this.contacts.slice();
-
-      this.contactChangedEvent.next(this.contactsListClone);
-  }
+      this.sortAndSend();
+    }
 
   updateContact(originalContact: Contacts, newContact: Contacts){
     if(!originalContact||!newContact){
@@ -86,7 +112,6 @@ export class ContactService {
 
       newContact.id = originalContact.id;
       this.contacts[pos] = newContact;
-      this.contactsListClone = this.contacts.slice();
-      this.contactChangedEvent.next(this.contactsListClone);
+      this.sortAndSend();
   }
 }
