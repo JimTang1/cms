@@ -14,12 +14,10 @@ export class DocumentService {
   maxDocumentId: number;
   documentsListClone: Document[];
   documentListChangedEvent = new Subject<Document[]>();
-  private databaseUrl = "https://wdd430-cms-80d03-default-rtdb.firebaseio.com/documents.json";
+  private databaseUrl = "http://localhost:3000/documents/";
 
 
-  constructor(private http:HttpClient) {
-    this.maxDocumentId = this.getMaxId();
-  } 
+  constructor(private http:HttpClient) {  } 
   
   storeDocuments(){
     let documentStr = JSON.stringify(this.documents);
@@ -47,13 +45,13 @@ export class DocumentService {
   }
 
   getDocuments(){
-    this.http.get<Document[]>(this.databaseUrl)
-      .subscribe(
-        (documents:Document[]) =>{
-          this.documents = documents;
-          this.maxDocumentId = this.getMaxId();
-          this.sortAndSend();
-        },(error)=>{
+    this.http.get<{ message: String, documents: Document[]}>(this.databaseUrl)
+    .subscribe((res: any) => {
+      // Get documents from database
+      this.documents = res.documents;
+      // Sort & Emit the document list
+      this.sortAndSend();
+    },(error)=>{
           console.log("Document Error " + error);
         }
       )
@@ -64,10 +62,19 @@ export class DocumentService {
     if(!newDocument){
       return;
     }
-    this.maxDocumentId++;
-    newDocument.id = this.maxDocumentId.toString();
-    this.documents.push(newDocument);
-    this.sortAndSend();
+    newDocument.id = "";
+    // setting headers for the http post
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+     // add to database
+    this.http.post<{ message: string, document: Document }>(this.databaseUrl, newDocument, { headers: headers })
+    .subscribe(
+      (responseData) => {
+        // add new document to documents
+        this.documents.push(responseData.document);
+        this.sortAndSend();
+      }
+    );
   }
 
   updateDocument(originalDocument: Document, newDocument: Document){
@@ -81,6 +88,18 @@ export class DocumentService {
       }
 
       newDocument.id = originalDocument.id;
+      // Setting header
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+    // update database
+    this.http.put(this.databaseUrl + originalDocument.id, newDocument, { headers: headers })
+    .subscribe(
+      (response: Response) => {
+        this.documents[pos] = newDocument;
+        this.sortAndSend();
+      }
+    );
+
       this.documents[pos] = newDocument;
       this.sortAndSend();
     }
@@ -95,19 +114,13 @@ export class DocumentService {
       return;
     }
 
-    this.documents.splice(pos, 1);
-    this.sortAndSend();
-  }
-
-  getMaxId(){
-    let maxId = 0;
-    this.documents.forEach(document => {
-      let currentId = +document.id;
-      if(currentId > maxId){
-        maxId = currentId;
-      }
-    });
-
-    return maxId;
+    // delete from database
+    this.http.delete(this.databaseUrl + document.id)
+      .subscribe(
+        (response: Response) => {
+          this.documents.splice(pos, 1);
+          this.sortAndSend();
+        }
+      );
   }
 }
