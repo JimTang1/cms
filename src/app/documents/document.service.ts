@@ -1,21 +1,16 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Document } from './document.model';
 import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentService {
-  documentSelectedEvent = new EventEmitter<Document>();
-  documentChangedEvent = new Subject<Document[]>();
   private documents:Document[] = [];
-  maxDocumentId: number;
-  documentsListClone: Document[];
   documentListChangedEvent = new Subject<Document[]>();
   private databaseUrl = "http://localhost:3000/documents/";
-
 
   constructor(private http:HttpClient) {  } 
   

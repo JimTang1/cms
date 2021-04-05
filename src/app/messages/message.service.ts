@@ -1,8 +1,8 @@
 import { Message } from './message.model';
-import { EventEmitter, Injectable } from '@angular/core';
-import { MOCKMESSAGES } from './MOCKMESSAGES';
+import { map } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,16 +10,10 @@ import { HttpClient } from '@angular/common/http';
 
 export class MessageService {
   private messages : Message[] =[];
-  messageChangedEvent = new EventEmitter<Message[]>();
   messageListChangedEvent = new Subject<Message[]>();
-  private databaseUrl = "https://wdd430-cms-80d03-default-rtdb.firebaseio.com/messages.json";
-  constructor(private http: HttpClient) {
-    //this.messages = MOCKMESSAGES;
-   }
-
-  //  getMessages(){
-  //    return this.messages.slice();
-  //  }
+  private databaseUrl = "http://localhost:3000/messages/";
+  
+  constructor(private http: HttpClient) {}
 
    getMessage(id:string): Message{
      for(let message of this.messages){
@@ -29,16 +23,38 @@ export class MessageService {
      }
    }
 
-   getMessages(){
-     this.http.get<Message[]>(this.databaseUrl)
-     .subscribe((messages:Message[]) =>{
-      this.messages = messages;
+   getMessages() {
+    this.http.get<{ message: String, messages: Message[]}>(this.databaseUrl)
+    .subscribe((res: any) => {
+      // Get messages from database
+      this.messages = res.messages;
+      // Emit the message list
       this.messageListChangedEvent.next(this.messages.slice());
-     });
-   }
+    },
+    (error: any) => {
+      console.log("Get Messages Error: " + error);
+    });
+  }
 
-   addMessage(message: Message){
-      this.messages.push(message);
-      this.messageListChangedEvent.next(this.messages.slice());
-   }
+  addMessage(message: Message) {
+    // Ensuring the message exists
+    if (!message)
+      return;
+
+    // Removing id if it exists (db sets this)
+    message.id = '';
+      
+    // setting headers for the http post
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+    this.http.post<{ message: string, mess: Message }>(this.databaseUrl, message, { headers: headers }).subscribe(
+      (responseData) => {
+        // setting message id
+        message.id = responseData.mess.id;
+        // add new message to messages
+        this.messages.push(message);
+        this.messageListChangedEvent.next(this.messages.slice());
+      }
+    );
+  }
 }
