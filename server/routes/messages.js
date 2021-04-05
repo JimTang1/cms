@@ -28,14 +28,14 @@ router.get('/:id', (req, res, next) => {
 
  router.post('/', (req, res, next) => {
     const maxMessageId = sequenceGenerator.nextId("messages");
-  
+
     const message = new Message({
       id: maxMessageId,
       subject: req.body.subject,
       msgText: req.body.msgText,
       sender: req.body.sender
     });
-  
+
     message.save()
       .then(createdMessage => {
         res.status(201).json({
@@ -57,7 +57,7 @@ router.get('/:id', (req, res, next) => {
         message.name = req.body.name;
         message.description = req.body.description;
         message.url = req.body.url;
-  
+
         Message.updateOne({ id: req.params.id }, document)
           .then(result => {
             res.status(204).json({
@@ -97,8 +97,8 @@ router.get('/:id', (req, res, next) => {
       })
       .catch(error => {
         res.status(500).json({
-          message: 'Document not found.',
-          error: { document: 'Document not found'}
+          message: 'Message not found.',
+          error: { message: 'Message not found'}
         });
       });
   });

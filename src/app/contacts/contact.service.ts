@@ -29,7 +29,7 @@ export class ContactService {
         this.sortAndSend();
       })
     }
-  
+
   sortAndSend(){
     this.contacts = this.contacts.sort(
      (a,b)=>a.name.toLowerCase()>b.name.toLowerCase()?1:
@@ -72,7 +72,7 @@ export class ContactService {
 
     // setting headers for the http post
     const headers = new HttpHeaders({'Content-Type': 'application/json'});
-    
+
     // add to database
     this.http.post<{ message: string, contact: Contacts }>(this.databaseUrl, newContact, { headers: headers }).subscribe(
       (responseData) => {
