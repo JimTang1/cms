@@ -1,5 +1,18 @@
 //Get defined routing files
 var index = require('./server/routes/app');
+var mongoose = require('mongoose');
+// establish a connection to the mongo database
+mongoose.connect('mongodb://localhost:27017/cms',
+   { useNewUrlParser: true }, (err, res) => {
+      if (err) {
+         console.log('Connection failed: ' + err);
+      }
+      else {
+         console.log('Connected to database!');
+      }
+   }
+);
+
 const messageRoutes = require('./server/routes/messages');
 const contactRoutes = require('./server/routes/contacts');
 const documentsRoutes = require('./server/routes/documents');
@@ -73,3 +86,5 @@ const server = http.createServer(app);
 server.listen(port, function() {
   console.log('API running on localhost: ' + port)
 });
+
+
