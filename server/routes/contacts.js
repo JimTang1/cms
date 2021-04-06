@@ -24,6 +24,24 @@ router.get('/:id', (req, res, next) => {
     });
 });
 
+router.get('/', (req, res, next) => {
+  Contact.find()
+    .populate('group')
+    .then(contacts => {
+      res.status(200).json({
+          message: 'Contacts fetched successfully!',
+          contacts: contacts
+        });
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: 'An error occurred',
+        error: error
+      });
+    });
+});
+
+
 router.post('/', (req, res, next) => {
   const maxContactId = sequenceGenerator.nextId("contacts");
 
@@ -123,5 +141,5 @@ router.get('/', (req, res, next) => {
         });
       });
   });
-  
-module.exports = router; 
+
+module.exports = router;
