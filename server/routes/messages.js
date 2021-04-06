@@ -3,9 +3,6 @@ var router = express.Router();
 const sequenceGenerator = require('./sequenceGenerator');
 const Message = require('../models/message');
 
-function returnError(res, err) {
-    res.status(500).json({message: "An error occurred!", error: err});
-}
 
 router.get('/', (req, res, next) => {
     Message.find()
@@ -13,16 +10,17 @@ router.get('/', (req, res, next) => {
     .then(mess => {
         res.status(200).json({message: "Messages fetched successfully!", messages: mess});
     }).catch(err => {
-        returnError(res, err);
+        console.log(err)
+        res.status(500).json({message: "An error occurred!", error: err});
     });
 });
 
 router.get('/:id', (req, res, next) => {
     Message.findOne({"id": req.params.id})
     .then(mes => {
-        res.status(200).json({message: "Message fetched successfully!", mess: mes});
+        res.status(200).json({message: "Message fetched successfully!", messages: mes});
     }).catch(err => {
-        returnError(res, err);
+        res.status(500).json({message: "An error occurred!", error: err});
     });
 });
 

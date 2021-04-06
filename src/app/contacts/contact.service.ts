@@ -11,10 +11,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class ContactService {
   private contacts : Contacts[];
   contactSelectedEvent = new EventEmitter<Contacts>();
-  contactChangedEvent = new Subject<Contacts[]>();
   contactListChangedEvent = new Subject<Contacts[]>();
-  maxContactId: number;
-  contactsListClone: Contacts[];
   private databaseUrl = "http://localhost:3000/contacts/";
 
 
